@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+
+    <style>
+    body {
+        background: linear-gradient(90deg,#ff7a18,#af002d 41.07%,#319197 76.05%);
+    }
+
+    .text {
+        font-family: Gotham Narrow SSm A,Gotham Narrow SSm B,Rubik,Lato,Lucida Grande,Lucida Sans Unicode,Tahoma,Sans-Serif;
+        font-style: normal;
+        font-weight: 800;
+        font-size: clamp(2rem,calc(2rem + 1.2vw),3rem);
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+
+    .container {
+        margin: 0px auto;
+        padding: 0px auto;
+    }
+
+    .heading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        min-height: 30vh;
+    }
+
+    .center-screen {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        min-height: 40vh;
+    }
+
+    .block-btn {
+        background-color: rgb(43, 61, 29) !important;
+        color: #fff !important;
+        border: 0;
+        margin: 3rem auto;
+        box-shadow: inset 1px 1px 0 rgb(145, 53, 53),0 2px 3px rgba(0,0,0,.4);
+        display: inline-block;
+        font-family: inherit;
+        font-weight: 700;
+        border-radius: 30px !important;
+        white-space: nowrap;
+        text-align: center;
+        text-decoration: none;
+        padding: 0.5rem 2.5rem!important;
+    }
+    .block-btn:focus{
+        text-decoration: none;
+        border: none;
+    }
+
+    .pad-1{
+        padding-top: 0.5rem;
+    }
+
+    </style>
+
+    <script>
+        function copy(value) {
+            var tempInput = document.createElement("input");
+            tempInput.value = value;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            document.getElementById('copy').innerHTML = 'Link Copied!'
+            setTimeout(function(){
+                document.getElementById('copy').innerHTML = 'Copy Link?'
+            },4000)
+        }
+    </script>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title class="text">Url Shortner</title>
+  </head>
+  <body>
+
+    <div class="container">
+        <h1 class="text heading">Url Shortner</h1>
+    </div>
+    <header class="center-screen">
+        <div class="container">
+                <form class="row row-content center-screen" method="post" method="/">
+                    {% csrf_token %}
+                <div class="form-group col-6">
+                    <input type="link" name="link" class="form-control" placeholder="Enter link to shorten">
+                    <h3 class="pad-1">{{shortLink}}</h3>
+                    {% if shortLink %} <span id='copy' style="background: transparent; border: none; cursor: pointer;" onclick="copy('{{shortLink}}')">Copy Link?</span style="background: transparent;">{% else %}<span></span>{% endif %}
+                    <h5 class="pad-1">{{error}}</h5>
+                    <button type="submit" class="btn primary-btn block-btn">Submit</button>
+                  </div>
+                </form>
+        </div>
+    </header>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"></script>
+</html>
