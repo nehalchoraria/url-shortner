@@ -22,17 +22,18 @@ def index(request):
         formattedLink = validateLink(request.POST['link'])
         if formattedLink is None:
             return render(request, 'shortner/index.html', {'error':settings.ERRORMESSAGE})
-        print(formattedLink)
         linkObject = GeneratedLinks.objects.filter(full_link=formattedLink).values()
-        print(linkObject)
         if len(linkObject) > 0:
             shortLink = linkObject[0]['short_link']
         else:
             shortLink = generateRandomLink()
             linkObject = GeneratedLinks(full_link=formattedLink,short_link=shortLink)
             linkObject.save()
-    shortLink = '' if shortLink == '' else settings.DOMAIN+shortLink
-    context = {'shortLink': shortLink }
+
+    dynamicWebsite = request.scheme+"://"+request.META['HTTP_HOST']+"/"
+    shortLink = '' if shortLink == '' else dynamicWebsite+shortLink
+    error = settings.ERRORMESSAGE if request.GET.get('e','') == 'y' else ''
+    context = {'shortLink': shortLink , 'error' : error }
 
     return render(request, 'shortner/index.html', context)
 
@@ -41,5 +42,5 @@ def redirectToUrl(request,link):
     if len(linkObject) > 0:
         return redirect(linkObject[0]['full_link'])
     else:
-        return HttpResponseRedirect('/?err')
+        return HttpResponseRedirect('/')
         # return render(request, 'shortner/index.html', {'error':'The link is either invalid or destroyed. Please re-create link.'})
