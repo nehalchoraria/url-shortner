@@ -4,7 +4,5 @@ django-background-tasks==1.2.5
 django-compat==1.0.15
 gunicorn==20.0.4
 portalocker==2.2.1
-pypiwin32==223
-pywin32==300
 six==1.15.0
 sqlparse==0.4.1
